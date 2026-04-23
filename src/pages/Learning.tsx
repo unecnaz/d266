@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Code, Database, BarChart2, Globe, ChevronRight } from 'lucide-react'
 
 const Learning: React.FC = () => {
   const [activeTool, setActiveTool] = useState('python')
   const [currentStep, setCurrentStep] = useState(1)
+  const [code, setCode] = useState<string>('')
 
   // 实训指导步骤
   const tutorialSteps = [
@@ -36,6 +37,104 @@ const Learning: React.FC = () => {
     { id: 'bi', name: 'BI工具', icon: <BarChart2 size={20} />, color: 'bg-orange-600' },
     { id: 'scraping', name: '数据采集', icon: <Globe size={20} />, color: 'bg-purple-600' }
   ]
+
+  // 默认代码
+  const defaultCode = {
+    python: `# Python编程环境
+# 尝试编写代码并运行
+
+# 示例：计算斐波那契数列
+def fibonacci(n):
+    if n <= 1:
+        return n
+    else:
+        return fibonacci(n-1) + fibonacci(n-2)
+
+# 测试函数
+for i in range(10):
+    print(f"fib({i}) = {fibonacci(i)}")
+
+# 练习：计算阶乘
+def factorial(n):
+    # 在这里编写代码
+    pass
+
+# 测试阶乘函数
+print("\n阶乘结果：")
+for i in range(1, 6):
+    print(f"{i}! = {factorial(i)}")`,
+    sql: `-- SQL查询环境
+-- 尝试编写SQL查询
+
+-- 示例：创建表
+CREATE TABLE students (
+    id INT PRIMARY KEY,
+    name VARCHAR(50),
+    age INT,
+    grade VARCHAR(10)
+);
+
+-- 插入数据
+INSERT INTO students (id, name, age, grade)
+VALUES (1, 'John', 18, 'A'),
+       (2, 'Alice', 17, 'B'),
+       (3, 'Bob', 19, 'A');
+
+-- 查询所有学生
+SELECT * FROM students;
+
+-- 练习：查询年龄大于17的学生
+SELECT * FROM students
+WHERE age > 17;`,
+    bi: `// BI工具模拟环境
+// 拖拽字段到此处创建可视化
+
+[数据源]
+- sales_data.csv
+- customer_data.csv
+- product_data.csv
+
+[可用字段]
+- sales_date
+- sales_amount
+- customer_id
+- product_id
+- region
+- category
+
+[图表类型]
+- 柱状图
+- 折线图
+- 饼图
+- 散点图
+- 仪表盘`,
+    scraping: `# 数据采集工具模拟
+# 尝试编写爬虫代码
+
+import requests
+from bs4 import BeautifulSoup
+
+# 示例：爬取网页标题
+def get_page_title(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    return soup.title.string
+
+# 测试函数
+url = "https://example.com"
+title = get_page_title(url)
+print(f"页面标题：{title}")
+
+# 练习：爬取新闻网站的标题列表
+def get_news_titles(url):
+    # 在这里编写代码
+    pass`
+  }
+
+  // 切换工具时更新代码
+  useEffect(() => {
+    setCode(defaultCode[activeTool as keyof typeof defaultCode])
+  }, [activeTool])
 
   return (
     <div className="space-y-6">
@@ -137,28 +236,12 @@ const Learning: React.FC = () => {
               <div className="w-3 h-3 rounded-full bg-green-500"></div>
               <span className="text-gray-400 text-sm ml-2">{activeTool === 'python' ? 'script.py' : activeTool === 'sql' ? 'query.sql' : activeTool === 'bi' ? 'dashboard.bi' : 'scraper.py'}</span>
             </div>
-            <div className="p-4 h-[450px] overflow-y-auto text-gray-300 font-mono text-sm">
-              {activeTool === 'python' && (
-                <pre>
-{`# Python编程环境\n# 尝试编写代码并运行\n\n# 示例：计算斐波那契数列\ndef fibonacci(n):\n    if n <= 1:\n        return n\n    else:\n        return fibonacci(n-1) + fibonacci(n-2)\n\n# 测试函数\nfor i in range(10):\n    print(f"fib({i}) = {fibonacci(i)}")\n\n# 练习：计算阶乘\ndef factorial(n):\n    # 在这里编写代码\n    pass\n\n# 测试阶乘函数\nprint("\n阶乘结果：")\nfor i in range(1, 6):\n    print(f"{i}! = {factorial(i)}")`}
-                </pre>
-              )}
-              {activeTool === 'sql' && (
-                <pre>
-{`-- SQL查询环境\n-- 尝试编写SQL查询\n\n-- 示例：创建表\nCREATE TABLE students (\n    id INT PRIMARY KEY,\n    name VARCHAR(50),\n    age INT,\n    grade VARCHAR(10)\n);\n\n-- 插入数据\nINSERT INTO students (id, name, age, grade)\nVALUES (1, 'John', 18, 'A'),\n       (2, 'Alice', 17, 'B'),\n       (3, 'Bob', 19, 'A');\n\n-- 查询所有学生\nSELECT * FROM students;\n\n-- 练习：查询年龄大于17的学生\nSELECT * FROM students\nWHERE age > 17;`}
-                </pre>
-              )}
-              {activeTool === 'bi' && (
-                <pre>
-{`// BI工具模拟环境\n// 拖拽字段到此处创建可视化\n\n[数据源]\n- sales_data.csv\n- customer_data.csv\n- product_data.csv\n\n[可用字段]\n- sales_date\n- sales_amount\n- customer_id\n- product_id\n- region\n- category\n\n[图表类型]\n- 柱状图\n- 折线图\n- 饼图\n- 散点图\n- 仪表盘`}
-                </pre>
-              )}
-              {activeTool === 'scraping' && (
-                <pre>
-{`# 数据采集工具模拟\n# 尝试编写爬虫代码\n\nimport requests\nfrom bs4 import BeautifulSoup\n\n# 示例：爬取网页标题\ndef get_page_title(url):\n    response = requests.get(url)\n    soup = BeautifulSoup(response.text, 'html.parser')\n    return soup.title.string\n\n# 测试函数\nurl = "https://example.com"\ntitle = get_page_title(url)\nprint(f"页面标题：{title}")\n\n# 练习：爬取新闻网站的标题列表\ndef get_news_titles(url):\n    # 在这里编写代码\n    pass`}
-                </pre>
-              )}
-            </div>
+            <textarea
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              className="w-full p-4 h-[450px] bg-gray-900 text-gray-300 font-mono text-sm resize-none"
+              placeholder="在此处编写你的代码..."
+            ></textarea>
           </div>
 
           {/* 运行按钮 */}
