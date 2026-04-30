@@ -3,8 +3,8 @@ import Layout from './components/Layout.tsx'
 import Home from './pages/Home.tsx'
 import Courses from './pages/Courses.tsx'
 import CourseDetail from './pages/CourseDetail.tsx'
-import Learning from './pages/Learning.tsx'
 import PythonPractice from './pages/PythonPractice.tsx'
+import PythonTraining from './pages/PythonTraining.tsx'
 import SqlPractice from './pages/SqlPractice.tsx'
 import BiPractice from './pages/BiPractice.tsx'
 import ScrapingPractice from './pages/ScrapingPractice.tsx'
@@ -23,7 +23,7 @@ function App() {
           <Route path="/courses" element={<Courses />} />
           <Route path="/courses/:category" element={<Courses />} />
           <Route path="/courses/:category/:courseId" element={<CourseDetail />} />
-          <Route path="/learning" element={<Learning />} />
+          <Route path="/python-training" element={<PythonTraining />} />
           <Route path="/learning/python" element={<PythonPractice />} />
           <Route path="/learning/sql" element={<SqlPractice />} />
           <Route path="/learning/bi" element={<BiPractice />} />

@@ -403,7 +403,8 @@ print(f'整体ROI: {overall_roi:.2f}%')
 
 # 找出效果最好的活动
 best_campaign = sorted_campaigns.iloc[0]
-print(f'\n效果最好的活动: {best_campaign["campaign"]}，ROI: {best_campaign["roi":.2f}%')`,
+print(f'\n效果最好的活动: {best_campaign["campaign"]}，ROI: {best_campaign["roi"]:.2f}%')
+      `,
       testCases: [
         { input: '', expected: '计算各营销活动的ROI和利润，找出效果最好的活动' }
       ]

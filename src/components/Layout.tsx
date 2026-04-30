@@ -13,7 +13,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navItems = [
     { name: '首页', path: '/', icon: <Book size={18} /> },
     { name: '课程中心', path: '/courses', icon: <Book size={18} /> },
-    { name: '学习模块', path: '/learning', icon: <Code size={18} /> },
+    { name: 'Python训练', path: '/python-training', icon: <Code size={18} /> },
     { name: '数据资源', path: '/datasets', icon: <Database size={18} /> },
     { name: '个人中心', path: '/profile', icon: <User size={18} /> }
   ]
