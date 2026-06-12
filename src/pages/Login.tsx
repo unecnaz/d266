@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { LogIn, Mail, Lock, User } from 'lucide-react'
+import { LogIn, Mail, Lock, User, ArrowLeft } from 'lucide-react'
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('')
@@ -28,7 +28,17 @@ const Login: React.FC = () => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-[600px]">
+    <div className="min-h-[600px] py-8">
+      {/* 返回按钮 */}
+      <Link
+        to="/"
+        className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-md mb-6"
+      >
+        <ArrowLeft size={18} className="mr-2" />
+        返回首页
+      </Link>
+
+      <div className="flex items-center justify-center">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -92,6 +102,7 @@ const Login: React.FC = () => {
             还没有账号？ <Link to="/register" className="text-blue-600 hover:underline">立即注册</Link>
           </p>
         </div>
+      </div>
       </div>
     </div>
   )

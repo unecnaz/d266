@@ -20,28 +20,6 @@ const Courses: React.FC = () => {
       skillTags: ['电子商务', '商业模式', '市场分析']
     },
     {
-      id: 'marketing-basics',
-      title: '市场营销基础',
-      description: '掌握市场营销的基本理论和方法，了解市场调研、品牌建设、促销策略等核心内容。',
-      category: 'basic',
-      level: '初级',
-      duration: 20,
-      targetJobs: ['市场分析师', '营销专员'],
-      typicalTasks: ['市场调研分析', '营销效果评估'],
-      skillTags: ['市场营销', '市场调研', '品牌管理']
-    },
-    {
-      id: 'statistics',
-      title: '应用统计',
-      description: '学习统计学的基本概念和方法，掌握数据描述、概率分布、假设检验等统计分析技能。',
-      category: 'basic',
-      level: '初级',
-      duration: 32,
-      targetJobs: ['数据分析师', '统计分析师'],
-      typicalTasks: ['数据统计分析', '假设检验', '数据可视化'],
-      skillTags: ['统计学', '数据分析', '假设检验']
-    },
-    {
       id: 'python-basics',
       title: 'Python基础',
       description: '掌握Python编程语言的基本语法和数据结构，学习函数、模块、文件操作等核心内容。',
@@ -64,39 +42,6 @@ const Courses: React.FC = () => {
       skillTags: ['Python爬虫', '数据采集', '数据清洗']
     },
     {
-      id: 'sales-analysis',
-      title: '销售数据分析',
-      description: '掌握销售数据的分析方法，学习销售趋势分析、客户细分、销售预测等技能。',
-      category: 'core',
-      level: '中级',
-      duration: 28,
-      targetJobs: ['销售分析师', '数据分析师'],
-      typicalTasks: ['销售数据建模', '销售预测', '客户分析'],
-      skillTags: ['销售分析', '数据建模', '预测分析']
-    },
-    {
-      id: 'product-analysis',
-      title: '产品数据分析',
-      description: '学习产品数据的分析方法，掌握用户行为分析、产品功能评估、迭代优化等技能。',
-      category: 'core',
-      level: '中级',
-      duration: 30,
-      targetJobs: ['产品分析师', '数据分析师'],
-      typicalTasks: ['用户行为分析', '产品功能评估', 'A/B测试'],
-      skillTags: ['产品分析', '用户行为', 'A/B测试']
-    },
-    {
-      id: 'customer-analysis',
-      title: '客户数据分析',
-      description: '掌握客户数据的分析方法，学习客户画像、客户生命周期、客户价值评估等技能。',
-      category: 'core',
-      level: '中级',
-      duration: 26,
-      targetJobs: ['客户分析师', '数据分析师'],
-      typicalTasks: ['客户画像构建', '客户生命周期分析', '客户价值评估'],
-      skillTags: ['客户分析', '用户画像', '客户生命周期']
-    },
-    {
       id: 'data-visualization',
       title: '数据可视化',
       description: '学习数据可视化的原理和方法，掌握使用Python库和BI工具创建有效数据可视化的技能。',
@@ -108,17 +53,6 @@ const Courses: React.FC = () => {
       skillTags: ['数据可视化', 'Matplotlib', '九数云BI', '数据报表']
     },
     {
-      id: 'smart-business',
-      title: '智慧商业',
-      description: '了解智慧商业的概念和应用，学习如何利用数据分析和人工智能技术提升商业决策效率。',
-      category: 'advanced',
-      level: '高级',
-      duration: 24,
-      targetJobs: ['商业智能分析师', '数据分析师'],
-      typicalTasks: ['商业智能分析', '决策支持', '智能推荐'],
-      skillTags: ['商业智能', '人工智能', '决策支持']
-    },
-    {
       id: 'real-projects',
       title: '企业真实运营项目',
       description: '参与企业真实运营项目，从数据获取、清洗、分析到可视化报告撰写的全流程实践。',
@@ -128,17 +62,6 @@ const Courses: React.FC = () => {
       targetJobs: ['数据分析师', '业务分析师'],
       typicalTasks: ['全流程数据分析', '项目管理', '报告撰写'],
       skillTags: ['项目实践', '全流程分析', '报告撰写']
-    },
-    {
-      id: 'industry-report',
-      title: '行业分析报告撰写',
-      description: '学习行业分析的方法和框架，掌握如何撰写专业的行业分析报告。',
-      category: 'advanced',
-      level: '高级',
-      duration: 20,
-      targetJobs: ['行业分析师', '数据分析师'],
-      typicalTasks: ['行业研究', '报告撰写', '趋势分析'],
-      skillTags: ['行业分析', '报告撰写', '趋势预测']
     }
   ]
 
@@ -156,7 +79,13 @@ const Courses: React.FC = () => {
   ]
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 min-h-screen">
+      {/* 测试内容 */}
+      <div className="bg-green-100 border-2 border-green-400 p-4 rounded">
+        <p className="text-green-900 font-bold text-xl">✅ 课程中心正在加载 - 测试文本</p>
+        <p className="text-green-800">课程数据: {filteredCourses.length} 门课程</p>
+      </div>
+
       {/* 页面标题 */}
       <div>
         <h1 className="text-3xl font-bold mb-2">课程中心</h1>

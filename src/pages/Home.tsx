@@ -56,7 +56,13 @@ const Home: React.FC = () => {
   ]
 
   return (
-    <div className="space-y-16">
+    <div className="space-y-16 min-h-screen">
+      {/* 测试内容 */}
+      <div className="bg-yellow-100 border-2 border-yellow-400 p-4 rounded">
+        <p className="text-yellow-900 font-bold text-xl">✅ 首页正在加载 - 测试文本</p>
+        <p className="text-yellow-800">如果你看到这条消息，说明页面渲染正常！</p>
+      </div>
+
       {/* 英雄区 */}
       <section className="relative bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg overflow-hidden shadow-xl">
         <div className="container mx-auto px-4 py-20 md:py-28 relative z-10">
@@ -73,13 +79,6 @@ const Home: React.FC = () => {
                 className="px-8 py-3 bg-[#F97316] hover:bg-orange-600 text-white font-medium rounded-md transition-colors flex items-center justify-center"
               >
                 浏览课程
-                <ChevronRight size={18} className="ml-2" />
-              </Link>
-              <Link
-                to="/learning"
-                className="px-8 py-3 bg-white hover:bg-gray-100 text-blue-700 font-medium rounded-md transition-colors flex items-center justify-center"
-              >
-                开始学习
                 <ChevronRight size={18} className="ml-2" />
               </Link>
             </div>

@@ -1,5 +1,6 @@
 import React from 'react'
-import { Database, FileText, Calendar, Clock, Award, ChevronRight } from 'lucide-react'
+import { Database, FileText, Calendar, Clock, Award, ChevronRight, ArrowLeft } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const Projects: React.FC = () => {
   // 实训项目数据
@@ -123,6 +124,15 @@ const Projects: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* 返回按钮 */}
+      <Link
+        to="/"
+        className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-md"
+      >
+        <ArrowLeft size={18} className="mr-2" />
+        返回首页
+      </Link>
+
       {/* 页面标题 */}
       <div>
         <h1 className="text-3xl font-bold mb-2">综合实训项目</h1>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Database, Download, Search, Filter, ChevronRight } from 'lucide-react'
+import { Database, Download, Search, Filter, ChevronRight, ArrowLeft } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const Datasets: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -100,6 +101,15 @@ const Datasets: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* 返回按钮 */}
+      <Link
+        to="/"
+        className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-md"
+      >
+        <ArrowLeft size={18} className="mr-2" />
+        返回首页
+      </Link>
+
       {/* 页面标题 */}
       <div>
         <h1 className="text-3xl font-bold mb-2">公共数据集中心</h1>

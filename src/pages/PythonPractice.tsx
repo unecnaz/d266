@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Code, CheckCircle, XCircle, ChevronRight, ChevronLeft } from 'lucide-react'
+import { Code, CheckCircle, XCircle, ChevronRight, ChevronLeft, ArrowLeft } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const PythonPractice: React.FC = () => {
   const [currentExercise, setCurrentExercise] = useState(1)
@@ -439,6 +440,15 @@ print(f'\n效果最好的活动: {best_campaign["campaign"]}，ROI: {best_campai
 
   return (
     <div className="space-y-6">
+      {/* 返回按钮 */}
+      <Link
+        to="/"
+        className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-md"
+      >
+        <ArrowLeft size={18} className="mr-2" />
+        返回首页
+      </Link>
+
       {/* 页面标题 */}
       <div>
         <h1 className="text-3xl font-bold mb-2">Python编程练习</h1>

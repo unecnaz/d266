@@ -13,6 +13,7 @@ import Projects from './pages/Projects.tsx'
 import Profile from './pages/Profile.tsx'
 import Login from './pages/Login.tsx'
 import Register from './pages/Register.tsx'
+import Learning from './pages/Learning.tsx'
 
 function App() {
   return (
@@ -24,6 +25,8 @@ function App() {
           <Route path="/courses/:category" element={<Courses />} />
           <Route path="/courses/:category/:courseId" element={<CourseDetail />} />
           <Route path="/python-training" element={<PythonTraining />} />
+          <Route path="/learning/:category/:courseId/lesson-:lessonId" element={<Learning />} />
+          <Route path="/learning/:category/:courseId" element={<Learning />} />
           <Route path="/learning/python" element={<PythonPractice />} />
           <Route path="/learning/sql" element={<SqlPractice />} />
           <Route path="/learning/bi" element={<BiPractice />} />

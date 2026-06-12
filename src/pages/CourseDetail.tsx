@@ -1,6 +1,6 @@
 import React from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { Book, Code, Database, Tag, Briefcase, Clock, ChevronLeft, PlayCircle } from 'lucide-react'
+import { Book, Code, Database, Tag, Briefcase, Clock, ChevronLeft, PlayCircle, ArrowLeft } from 'lucide-react'
 
 const CourseDetail: React.FC = () => {
   const { category, courseId } = useParams<{ category: string; courseId: string }>()
@@ -118,7 +118,16 @@ const CourseDetail: React.FC = () => {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
+      {/* 返回按钮 */}
+      <Link
+        to="/courses"
+        className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-md"
+      >
+        <ArrowLeft size={18} className="mr-2" />
+        返回课程中心
+      </Link>
+
       {/* 面包屑导航 */}
       <div className="flex items-center text-sm text-gray-500">
         <Link to="/" className="hover:text-blue-600">首页</Link>
@@ -162,7 +171,7 @@ const CourseDetail: React.FC = () => {
             </div>
           </div>
           <Link
-            to="/learning"
+            to={`/learning/${category}/${courseId}/lesson-1`}
             className="mt-4 md:mt-0 px-6 py-2 bg-[#F97316] hover:bg-orange-600 text-white font-medium rounded-md transition-colors flex items-center"
           >
             <PlayCircle size={18} className="mr-2" />
@@ -229,15 +238,19 @@ const CourseDetail: React.FC = () => {
           </h3>
           <div className="space-y-3">
             {course.lessons.map((lesson) => (
-              <div key={lesson.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors">
+              <Link
+                key={lesson.id}
+                to={`/learning/${category}/${courseId}/lesson-${lesson.id}`}
+                className="flex items-center justify-between p-3 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors block"
+              >
                 <div className="flex items-center">
                   <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mr-3">
                     {lesson.id}
                   </div>
                   <span className="font-medium">{lesson.title}</span>
                 </div>
-                <PlayCircle size={20} className="text-blue-600 cursor-pointer hover:text-blue-800 transition-colors" />
-              </div>
+                <PlayCircle size={20} className="text-blue-600 transition-colors" />
+              </Link>
             ))}
           </div>
         </div>
