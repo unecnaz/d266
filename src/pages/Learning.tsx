@@ -31,22 +31,136 @@ interface Course {
   lessons: Lesson[]
 }
 
+const QuizSection: React.FC<{ question: string; options?: string[]; answer?: string; indexKey: number }> = ({ question, options, answer, indexKey }) => {
+  const [selectedOption, setSelectedOption] = useState<number | null>(null)
+
+  // 判断某选项是否为正确答案：取选项的第一个字母（如 'A'），与答案对比
+  const isCorrectOption = (opt: string): boolean => {
+    if (!answer) return false
+    const letter = opt.trim().charAt(0) // 'A' / 'B' / 'C' / 'D'
+    return letter === answer.trim().charAt(0)
+  }
+
+  // 选择了之后就展开答案
+  const answered = selectedOption !== null
+  const isUserCorrect = answered && options && isCorrectOption(options[selectedOption])
+
+  const handleSelect = (j: number) => {
+    if (selectedOption === null) {
+      setSelectedOption(j)
+    } else {
+      // 已选过，允许再次切换隐藏答案（相当于重新做）
+      setSelectedOption(selectedOption === j ? null : j)
+    }
+  }
+
+  const isChoiceQuestion = options && options.length > 0
+
+  return (
+    <div key={indexKey} className="my-8 bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-6 shadow-md">
+      <div className="flex items-center mb-4">
+        <span className="text-2xl mr-3">📝</span>
+        <h4 className="text-lg font-bold text-blue-900">{question}</h4>
+      </div>
+
+      {isChoiceQuestion && (
+        <div className="space-y-2 mb-4">
+          {options!.map((opt, j) => {
+            const selected = selectedOption === j
+            const correct = answered && isCorrectOption(opt)
+            const userPickedWrong = answered && selected && !isCorrectOption(opt)
+
+            let style = 'bg-white border-blue-200 text-gray-800 hover:bg-blue-50'
+            if (answered) {
+              if (correct) {
+                style = 'bg-green-50 border-green-500 text-green-900 ring-2 ring-green-300'
+              } else if (userPickedWrong) {
+                style = 'bg-red-50 border-red-500 text-red-900 ring-2 ring-red-300'
+              } else {
+                style = 'bg-white border-blue-200 text-gray-600 opacity-70'
+              }
+            } else if (selected) {
+              style = 'bg-blue-100 border-blue-500 text-blue-900 font-medium ring-2 ring-blue-300'
+            }
+
+            return (
+              <div
+                key={j}
+                onClick={() => handleSelect(j)}
+                className={`px-4 py-3 rounded-lg border-2 transition-all cursor-pointer select-none flex items-center justify-between ${style}`}
+              >
+                <span className="flex-1">{opt}</span>
+                {answered && correct && <span className="ml-3 text-green-700 font-bold text-lg">✓ 正确</span>}
+                {userPickedWrong && <span className="ml-3 text-red-700 font-bold text-lg">✗ 不对</span>}
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      {/* 选择题：选了之后展示对错+答案 */}
+      {isChoiceQuestion && answered && (
+        <div className="mt-4">
+          <div className={`mb-3 px-4 py-2 rounded-lg font-semibold ${
+            isUserCorrect
+              ? 'bg-green-100 text-green-800 border border-green-300'
+              : 'bg-red-100 text-red-800 border border-red-300'
+          }`}>
+            {isUserCorrect ? '🎉 回答正确！' : '😅 答错了，继续加油！'}
+          </div>
+          <div className="p-4 bg-white rounded-lg border-l-4 border-green-500 shadow-sm">
+            <div className="font-semibold text-green-800 mb-2 flex items-center">
+              <span className="text-xl mr-2">✅</span>
+              参考答案：
+            </div>
+            <div className="text-gray-700 whitespace-pre-wrap leading-relaxed">{answer}</div>
+          </div>
+          <button
+            onClick={() => setSelectedOption(null)}
+            className="mt-3 inline-flex items-center px-4 py-2 rounded-lg font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 transition-all"
+          >
+            <span className="mr-2">🔄</span>重新作答
+          </button>
+        </div>
+      )}
+
+      {/* 填空 / 简答题：没有选项，展示答案显示按钮 */}
+      {!isChoiceQuestion && (
+        <div className="mt-4">
+          <button
+            onClick={() => setSelectedOption(answered ? null : 0)}
+            className={`inline-flex items-center px-4 py-2 rounded-lg font-medium transition-all ${
+              answered
+                ? 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                : 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow hover:shadow-lg'
+            }`}
+          >
+            {answered ? (
+              <><EyeOff size={16} className="mr-2" />隐藏答案</>
+            ) : (
+              <><Eye size={16} className="mr-2" />显示答案</>
+            )}
+          </button>
+          {answered && (
+            <div className="mt-4 p-4 bg-white rounded-lg border-l-4 border-green-500 shadow-sm">
+              <div className="font-semibold text-green-800 mb-2 flex items-center">
+                <span className="text-xl mr-2">✅</span>
+                参考答案：
+              </div>
+              <div className="text-gray-700 whitespace-pre-wrap leading-relaxed">{answer}</div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
 const Learning: React.FC = () => {
   const { category, courseId, lessonId } = useParams<{ category: string; courseId: string; lessonId?: string }>()
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0)
   const [completedLessons, setCompletedLessons] = useState<Set<number>>(new Set())
-  const [revealedAnswers, setRevealedAnswers] = useState<Set<number>>(new Set())
   const navigate = useNavigate()
-
-  const toggleAnswer = (index: number) => {
-    const next = new Set(revealedAnswers)
-    if (next.has(index)) {
-      next.delete(index)
-    } else {
-      next.add(index)
-    }
-    setRevealedAnswers(next)
-  }
 
   const coursesData: Course[] = [
     {
@@ -1100,46 +1214,14 @@ const Learning: React.FC = () => {
           </div>
         )
       case 'quiz':
-        const isRevealed = revealedAnswers.has(key)
         return (
-          <div key={key} className="my-8 bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-6 shadow-md">
-            <div className="flex items-center mb-4">
-              <span className="text-2xl mr-3">📝</span>
-              <h4 className="text-lg font-bold text-blue-900">{item.question}</h4>
-            </div>
-            {item.options && (
-              <div className="space-y-2 mb-4">
-                {item.options.map((opt, j) => (
-                  <div key={j} className="bg-white px-4 py-2 rounded-lg border border-blue-200 text-gray-800 hover:bg-blue-50 transition-colors cursor-pointer">
-                    {opt}
-                  </div>
-                ))}
-              </div>
-            )}
-            <button
-              onClick={() => toggleAnswer(key)}
-              className={`inline-flex items-center px-4 py-2 rounded-lg font-medium transition-all ${
-                isRevealed
-                  ? 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  : 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow hover:shadow-lg'
-              }`}
-            >
-              {isRevealed ? (
-                <><EyeOff size={16} className="mr-2" />隐藏答案</>
-              ) : (
-                <><Eye size={16} className="mr-2" />显示答案</>
-              )}
-            </button>
-            {isRevealed && (
-              <div className="mt-4 p-4 bg-white rounded-lg border-l-4 border-green-500 shadow-sm">
-                <div className="font-semibold text-green-800 mb-2 flex items-center">
-                  <span className="text-xl mr-2">✅</span>
-                  参考答案：
-                </div>
-                <div className="text-gray-700 whitespace-pre-wrap leading-relaxed">{item.answer}</div>
-              </div>
-            )}
-          </div>
+          <QuizSection
+            key={key}
+            indexKey={key}
+            question={item.question || ''}
+            options={item.options}
+            answer={item.answer}
+          />
         )
       default:
         return null
