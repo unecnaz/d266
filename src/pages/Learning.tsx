@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
-import { Book, Clock, CheckCircle, ArrowLeft, ChevronRight, ChevronLeft, PlayCircle } from 'lucide-react'
+import { useParams, Link, useNavigate } from 'react-router-dom'
+import { Book, Clock, CheckCircle, ArrowLeft, ChevronRight, ChevronLeft, PlayCircle, Eye, EyeOff } from 'lucide-react'
 
 interface Section {
   type: 'h2' | 'h3' | 'h4' | 'p' | 'bullet' | 'table' | 'code' | 'quiz'
@@ -35,6 +35,18 @@ const Learning: React.FC = () => {
   const { category, courseId, lessonId } = useParams<{ category: string; courseId: string; lessonId?: string }>()
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0)
   const [completedLessons, setCompletedLessons] = useState<Set<number>>(new Set())
+  const [revealedAnswers, setRevealedAnswers] = useState<Set<number>>(new Set())
+  const navigate = useNavigate()
+
+  const toggleAnswer = (index: number) => {
+    const next = new Set(revealedAnswers)
+    if (next.has(index)) {
+      next.delete(index)
+    } else {
+      next.add(index)
+    }
+    setRevealedAnswers(next)
+  }
 
   const coursesData: Course[] = [
     {
@@ -1026,14 +1038,14 @@ const Learning: React.FC = () => {
   const handleNext = () => {
     if (course && currentLessonIndex < course.lessons.length - 1) {
       const nextLesson = course.lessons[currentLessonIndex + 1]
-      window.location.href = `/learning/${category}/${courseId}/${nextLesson.id}`
+      navigate(`/learning/${category}/${courseId}/${nextLesson.id}`)
     }
   }
 
   const handlePrevious = () => {
     if (course && currentLessonIndex > 0) {
       const prevLesson = course.lessons[currentLessonIndex - 1]
-      window.location.href = `/learning/${category}/${courseId}/${prevLesson.id}`
+      navigate(`/learning/${category}/${courseId}/${prevLesson.id}`)
     }
   }
 
@@ -1088,6 +1100,7 @@ const Learning: React.FC = () => {
           </div>
         )
       case 'quiz':
+        const isRevealed = revealedAnswers.has(key)
         return (
           <div key={key} className="my-8 bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-6 shadow-md">
             <div className="flex items-center mb-4">
@@ -1097,19 +1110,35 @@ const Learning: React.FC = () => {
             {item.options && (
               <div className="space-y-2 mb-4">
                 {item.options.map((opt, j) => (
-                  <div key={j} className="bg-white px-4 py-2 rounded-lg border border-blue-200 text-gray-800 hover:bg-blue-50 transition-colors">
+                  <div key={j} className="bg-white px-4 py-2 rounded-lg border border-blue-200 text-gray-800 hover:bg-blue-50 transition-colors cursor-pointer">
                     {opt}
                   </div>
                 ))}
               </div>
             )}
-            <div className="mt-4 p-4 bg-white rounded-lg border-l-4 border-green-500 shadow-sm">
-              <div className="font-semibold text-green-800 mb-2 flex items-center">
-                <span className="text-xl mr-2">✅</span>
-                参考答案：
+            <button
+              onClick={() => toggleAnswer(key)}
+              className={`inline-flex items-center px-4 py-2 rounded-lg font-medium transition-all ${
+                isRevealed
+                  ? 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  : 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow hover:shadow-lg'
+              }`}
+            >
+              {isRevealed ? (
+                <><EyeOff size={16} className="mr-2" />隐藏答案</>
+              ) : (
+                <><Eye size={16} className="mr-2" />显示答案</>
+              )}
+            </button>
+            {isRevealed && (
+              <div className="mt-4 p-4 bg-white rounded-lg border-l-4 border-green-500 shadow-sm">
+                <div className="font-semibold text-green-800 mb-2 flex items-center">
+                  <span className="text-xl mr-2">✅</span>
+                  参考答案：
+                </div>
+                <div className="text-gray-700 whitespace-pre-wrap leading-relaxed">{item.answer}</div>
               </div>
-              <div className="text-gray-700 whitespace-pre-wrap leading-relaxed">{item.answer}</div>
-            </div>
+            )}
           </div>
         )
       default:
